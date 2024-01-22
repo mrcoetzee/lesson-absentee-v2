@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+ 
+
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    <div class="container p-5 my-5 bg-secondary text-white">
+        <div class="row">
+            <div class="col-md-2">
+                <!--Download all button-->
+                <button type="button" class="btn btn-warning mt-3" value="download_all", name="btnDownloadAll" id="btnDownloadAll">All absentees</button>
+            </div>
+            <div class="col-md-2">
+                <!--Download today button-->
+                <button type="button" class="btn btn-warning mt-3" value="download_today", name="btnDownloadToday" id="btnDownloadToday">Today's absentees</button>
+            </div>               
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#btnDownloadAll').on('click', function () {
+            $.ajax({
+                url: '{% url "download_csv_all" %}',
+                method: 'GET',
+
+
+                success: function (data) {
+                    // The download link will not be visible, but the browser will download the file
+                    console.log('Received data:', data);
+                    const blob = new Blob([data], { type: 'text/csv' });
+                    console.log('Blob created:', blob); 
+                    
+                    // Create a temporary link element
+                    const link = document.createElement('a');
+                    
+                    link.href = window.URL.createObjectURL(blob);
+                    
+                    link.download = 'all_data.csv';
+                       
+
+                    // Append the link to the body and trigger the click event
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Remove the temporary link from the DOM
+                    document.body.removeChild(link);
+                    alert("Downloaded successfully");
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('#btnDownloadToday').on('click', function () {
+            $.ajax({
+                url: '{% url "download_csv_today" %}',
+                method: 'GET',
+
+
+                success: function (data) {
+                    // The download link will not be visible, but the browser will download the file
+                    console.log('Received data:', data);
+                    const blob = new Blob([data], { type: 'text/csv' });
+                    console.log('Blob created:', blob); 
+                    
+                    // Create a temporary link element
+                    const link = document.createElement('a');
+                    
+                    link.href = window.URL.createObjectURL(blob);
+                    
+                    link.download = 'today_data.csv';
+                       
+
+                    // Append the link to the body and trigger the click event
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Remove the temporary link from the DOM
+                    document.body.removeChild(link);
+                    alert("Downloaded successfully");
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

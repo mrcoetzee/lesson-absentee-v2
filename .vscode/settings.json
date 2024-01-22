@@ -1,0 +1,5 @@
+{
+    "cloudcode.duetAI.inlineSuggestions.enableAuto": true,
+    "appService.defaultWebAppToDeploy": "/subscriptions/67247a62-84e0-4f13-9d65-f3df375aa655/resourceGroups/westering-lesson-app/providers/Microsoft.Web/sites/westering-lesson-app",
+    "appService.deploySubpath": "."
+}
