@@ -9,14 +9,21 @@
    
     <!--List of selected learners-->
     <div class="container p-5 my-5 border  bg-dark text-white">
+        <h2>{{objClass}} | {{objClass.description}} - Lesson: {{lessonnum}}</h2>
         <label  class="form-label">Absentees:</label>
          <ul class="list-group" id="dynamicList">
    
         {% for learner in absentees %}
 
                 <li class="list-group-item list-group-item-action selector" id="listLearner" data-learner-id="{{learner.id}}">
-                    {{learner.learner.name}} 
-
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{learner.learner.name}} | {{learner.learner.reg_class}} 
+                        </div>
+                        <div class="col-md-2">
+                            Lesson: {{lessonnum}}
+                        </div>
+                    </div>
                 </li>               
         {% endfor %}
          </ul>        
@@ -24,11 +31,15 @@
 
     <!--Learner Select-->
     <div class="container p-5 my-5 bg-secondary text-white">
-        <label for="absentStudentsInput" class="form-label">Choose a learner from the list:</label>
-        <!--Enter learner name input-->
-        <input type="text" id="absentStudentsInput" name="absentStudentsInput" class="form-control" placeholder="Enter absent students' names">
-        <input type="hidden" id="absentStudentsInputId" name= "absentStudentsInputId">
-        
+        <div class="row">
+            <div class="col-md-6">
+                <label for="absentStudentsInput" class="form-label">Choose a learner from the list:</label>
+                <!--Enter learner name input-->
+                <input type="text" id="absentStudentsInput" name="absentStudentsInput" class="form-control" placeholder="Enter absent students' names">
+                <input type="hidden" id="absentStudentsInputId" name= "absentStudentsInputId">
+            </div>
+            
+        </div>
         <div class="row">
             <div class="col-md-2">
                 <!--Submit button-->

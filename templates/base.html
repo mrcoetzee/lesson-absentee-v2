@@ -45,7 +45,7 @@
     <div class="container bg-white mt-3">
         {% if current_user.is_authenticated %}
             <div class="row">
-
+                
                 <div class="col">
                     <a href="{% url 'home' %}">
                         <h5 class="btn btn-secondary">Logged in as <b>{{ current_user }}</b></h5>
@@ -58,6 +58,7 @@
                     <button class="btn btn-secondary" type="button" onclick="history.back()">Back</button>
                     <a class = "btn btn-primary" href="{% url 'logout_user' %}">Logout</a>
                 </div>
+                
             </div>
         {% endif %}
         
@@ -72,9 +73,8 @@
             
         {% endif %}
     </div>
-    {% if current_user.is_authenticated %}
     <hr/>
-    {% endif %}
+
 
     {% block content %}
 

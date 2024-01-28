@@ -16,9 +16,13 @@ def manage_absentees(request):
     #Get classes for current user
     classes = ClassUnit.objects.filter(user=current_user).order_by('subject')
 
+    double_lesson = False
+    
+
 
     #Process inputs
     if request.method == 'POST':
+
         #Get selected class
         try:
             selected_class = request.POST.get('classid')
@@ -27,11 +31,15 @@ def manage_absentees(request):
             selected_class = None
             messages.error(request, 'Please select a class')
 
+        #Get lesson number
+        lessonnum = request.POST.get('lessonNumber')
+        double_lesson = request.POST.get('double_check')
+
 
         #btnSubmitAbsentees
-        if request.POST.get('btnSubmitAbsentees') and selected_class:
+        if request.POST.get('btnSubmitAbsentees') and selected_class and lessonnum is not None:
             classpk = selected_class.id
-            return redirect('submit_absentees', classpk=classpk)
+            return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum, double_lesson=double_lesson)
         elif not selected_class:
             messages.error(request, 'Please select a class')
 

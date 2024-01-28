@@ -44,7 +44,7 @@ class ClassUnit(models.Model):
 
     def __str__(self):
         teacher_str= self.user.username if self.user else 'no teacher'
-        return f"{self.subject.subject} {teacher_str} {self.grade}"
+        return f"{self.subject.subject} {self.grade} {teacher_str}"
         #return self.subject.subject + ' ' + self.user.username + ' ' + str(self.grade)
     
     def getusername(self):
@@ -57,6 +57,7 @@ class ClassUnit(models.Model):
 class Learner(models.Model):
     name = models.CharField(max_length=150)
     grade = models.ForeignKey(Grade, on_delete=models.SET_NULL, null=True)
+    reg_class = models.CharField(max_length=3, null=True)
 
     def __str__(self):
         return self.name
@@ -66,6 +67,8 @@ class LearnerClass(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     classunit = models.ForeignKey(ClassUnit, on_delete=models.SET_NULL, null=True)
     learner = models.ForeignKey(Learner, on_delete=models.SET_NULL, null=True)
+    lesson_no=models.CharField(max_length=1, null=True)
+
 
     def __str__(self):
         return self.classunit.subject.subject + ' ' + self.learner.name + ' | '  + \

@@ -9,12 +9,12 @@ from base.models import ClassUnit, Learner, LearnerClass
 
 
 @login_required(login_url='index')
-def submit_absentees(request, classpk):
+def submit_absentees(request, classpk, lessonnum, double_lesson):
 
     #Extract all absentees from model LearnerClass that match today's date.
     absentees = LearnerClass.objects.filter(classunit=classpk, created__date=datetime.date.today())
     obj_class = ClassUnit.objects.get(id=classpk)
-
+    
 
     #Current User
     current_user = request.user
@@ -43,8 +43,9 @@ def submit_absentees(request, classpk):
 
             #Add learner to LearnerClass
             if learner:
+                
                 try:
-                    new_absentee= LearnerClass(learner=learner, classunit=obj_class)
+                    new_absentee= LearnerClass(learner=learner, classunit=obj_class,lesson_no=lessonnum)
                     new_absentee.save()
                     messages.success(request, 'Learner successfully added')
                 except Exception as e:
@@ -52,36 +53,11 @@ def submit_absentees(request, classpk):
 
 
             #btnAddAbsenteeContext
-            context = {'current_user' : current_user, 'absentees' : absentees}
+            context = {'current_user' : current_user, 'absentees' : absentees, 'objClass' : obj_class, 'lessonnum':lessonnum}
             return render (request, 'base/submit_absentees.html', context)
         
-
-        '''
-        if request.POST.get('selected_learner'):
-
-            #fetch learner from db
-            try:
-                del_learner = request.POST.get('selected_learner')
-                del_learner = Learner.objects.get(name=del_learner)
-            except Learner.DoesNotExist:
-                del_learner = None
-                messages.error = (request, 'Learner cannot be deleted, please contact admin.')
-            
-            #Remove learner from list of selected learners
-            selected_learners.remove(del_learner.name)
-            selected_ids.remove(del_learner.id)
-
-            #Update session
-            request.session['selected_learners'] = selected_learners   
-            request.session['selected_ids'] = selected_ids
-
-            #Del learner context
-            context = {'current_user' : current_user, 'learners' : learners, 'selected_learners' : selected_learners}
-            return render(request, 'base/submit_absentees.html', context)
-            '''        
-       
     #Context
-    context = {'current_user' : current_user, 'absentees' : absentees}
+    context = {'current_user' : current_user, 'absentees' : absentees, 'objClass' : obj_class, 'lessonnum':lessonnum}
 
     return render (request, 'base/submit_absentees.html', context)
 
@@ -89,7 +65,7 @@ def submit_absentees(request, classpk):
 def autocomplete(request):
     query = request.GET.get('term', '')
     learners = Learner.objects.filter(name__icontains=query)[:10]  # Adjust the number of suggestions as needed
-    suggestions = [{'label':f"{learner.name} | Gr {learner.grade}", 'value': learner.id} for learner in learners]
+    suggestions = [{'label':f"{learner.name} | Gr {learner.reg_class}", 'value': learner.id} for learner in learners]
     return JsonResponse(suggestions, safe=False)
 
 ##############################################################################

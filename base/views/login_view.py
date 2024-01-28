@@ -8,16 +8,17 @@ def index(request):
     
     if request.method == 'POST':
         #Get teacher code input
-        teacherCode = request.POST.get('teacher_code').upper()
-        registerCode = request.POST.get('register_code').upper()
+        teacherCode = request.POST.get('teacher_code')
+        teacherPass = request.POST.get('teacher_pass')
+        #registerCode = request.POST.get('register_code').upper()
 
         if request.POST.get('btnLogin'):
             #Check if teacher code exists
             
             try:
-                teacher = User.objects.get(username=teacherCode)
+                teacher = User.objects.get(username=teacherCode,password=teacherPass)
             except User.DoesNotExist:
-                messages.error(request, "Teacher code does not exist")
+                messages.warning(request, "Teacher code or password is incorrect")
                 teacher = None
 
             
@@ -26,7 +27,7 @@ def index(request):
                 return redirect('home')
             
             
-                
+        '''       
         #Create new teacher code   
         if request.POST.get('btnRegister') and registerCode is not None:
             
@@ -39,7 +40,8 @@ def index(request):
             if user is not None:
                 login(request, user)
                 return redirect('home')
-            
+        '''     
+
     return render(request,'base/login.html')
     
 

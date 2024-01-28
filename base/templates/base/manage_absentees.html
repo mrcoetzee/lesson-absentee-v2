@@ -10,6 +10,7 @@
     <!-------------------------------------------------------------------------------------------------->
     <!--List of learners-->
     <div class="container p-5 my-5 border  bg-dark text-white">
+        
         <h4>Your classes:</h4>
         {% for class in classes %}
             
@@ -31,25 +32,65 @@
 
 <!--Input buttons-->
 <!------------------------------------------------------------------------------------------------------>
+
 <div class="container p-5 my-5 bg-secondary text-white">
+    
     <div class="row">
+    
+        <div class="col">
+          
         <!--Submit Lesson Absentees Button-->
-        <div class="container col">
-            <label for="btnSubmitAbsentees" class="form-label">Submit lesson absentees.</label>
-            <br/>
-            <button type="submit" class="btn btn-primary" name="btnSubmitAbsentees", value="SubmitAbsentees">Submit Absentees</button>
-        </div>
+           
+                      
+                <label for="btnSubmitAbsentees" class="form-label ">Submit lesson absentees.</label>
+                <br/>
+                <button type="submit" class="btn btn-primary" name="btnSubmitAbsentees", value="SubmitAbsentees">Submit Absentees</button>
+                
+                <br/>
+                <br/>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="lessonNumber" class="form-label">Lesson Number:</label>
+                    <select class="form-control" id="lessonNumber" name="lessonNumber">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                    </select>
+                </div>           
+                
+                <div class="col-md-3">
+                    <br/>
+                    <div class="form-check">
+                        <label>Double Lesson</label>
+                        <input class= "form-check-input fs-4" type="checkbox" value="" id="double_check">
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+      
         <!------------------------------------------------------------------------------------------>
         <!--Manage Absentees Button-->
-        <div class="container col">
+
+
+        <div class="col">
             <label for="btnManageAbsentees" class="form-label">View and manage absentees.</label>
             <br/>
             <button type="submit" class="btn btn-warning" value="ManageAbsentees", name="btnManageAbsentees">Manage Absentees</button>
         </div>
+
+    </div>
+    
+</div>
         <!------------------------------------------------------------------------------------------>
         
-    </div>
-</div>
+    
+
 
 </form>
 
