@@ -33,19 +33,25 @@
     </div>
 
     <!--Create user-->
-<!-----------------------------------------------------------------------------------------------------
-    <div class="container p-5 my-5 mt-0 border bg-primary text-white">
+<!------------------------------------------------------------------------------------------------------->
+    <div class="container p-5 my-5 mt-0 border bg-secondary text-white">
         <h4>Teacher Create</h4>
         <div class="mb-3 mt-3">
-        <label for="register_code" class="form-label">Teacher Code:</label>
-        <input type="text" class="form-control" id="register_code" 
-            placeholder="Enter your teacher code" name="register_code">
+            <label for="register_code" class="form-label">Teacher Code:</label>
+            <input type="text" class="form-control" id="register_code" 
+                placeholder="Enter your teacher code" name="register_code">
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label for="newteacher_pass" class="form-label">Password:</label>
+            <input type="text" class="form-control" 
+                placeholder="Enter your new password" name="newteacher_pass">
         </div>
     
         <button type="submit" class="btn btn-dark" name="btnRegister" value="Register">Submit</button>
     </div>
 
--->
+
   </form>
 
 {% endblock %}

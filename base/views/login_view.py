@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 
 
 def index(request):
@@ -27,20 +28,27 @@ def index(request):
                 return redirect('home')
             
             
-        '''       
+        newTeacherCode = request.POST.get('register_code').upper()
+        newTeacherPass = request.POST.get('newteacher_pass')      
         #Create new teacher code   
-        if request.POST.get('btnRegister') and registerCode is not None:
+        if request.POST.get('btnRegister') and newTeacherCode is not None and newTeacherPass is not None:
             
             try:
-                new_user = User.objects.create_user(username=registerCode)
+                new_user = User.objects.create_user(username=newTeacherCode, password=newTeacherPass)
             except Exception as e:
                 messages.error(request, "User already exists, logged in with that code")
 
-            user = User.objects.get(username=registerCode)
-            if user is not None:
+            try:    
+                user = authenticate(request, username=newTeacherCode, password=newTeacherPass)
+                
                 login(request, user)
                 return redirect('home')
-        '''     
+            except Exception as e:
+                messages.error(request,e)
+
+            
+                
+             
 
     return render(request,'base/login.html')
     

@@ -35,11 +35,16 @@ def manage_absentees(request):
         lessonnum = request.POST.get('lessonNumber')
         double_lesson = request.POST.get('double_check')
 
+        if double_lesson == '1':
+            lessonnum = f"{lessonnum} - {int(lessonnum)+1}"
+        else:
+            lessonnum= f"{lessonnum}test"
+
 
         #btnSubmitAbsentees
         if request.POST.get('btnSubmitAbsentees') and selected_class and lessonnum is not None:
             classpk = selected_class.id
-            return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum, double_lesson=double_lesson)
+            return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum)
         elif not selected_class:
             messages.error(request, 'Please select a class')
 

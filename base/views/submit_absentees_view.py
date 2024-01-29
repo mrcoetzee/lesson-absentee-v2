@@ -9,7 +9,7 @@ from base.models import ClassUnit, Learner, LearnerClass
 
 
 @login_required(login_url='index')
-def submit_absentees(request, classpk, lessonnum, double_lesson):
+def submit_absentees(request, classpk, lessonnum):
 
     #Extract all absentees from model LearnerClass that match today's date.
     absentees = LearnerClass.objects.filter(classunit=classpk, created__date=datetime.date.today())
