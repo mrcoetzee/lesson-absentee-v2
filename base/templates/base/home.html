@@ -27,11 +27,13 @@
             </div>
             <!------------------------------------------------------------------------------------------>
             <!--Statistics Button-->
+            {% if current_user.is_superuser %}
             <div class="container col">
                 <label for="btnAbsentees" class="form-label">View absentee statistics</label>
                 <br/>
                 <button type="submit" class="btn btn-dark" value="Stats", name="btnStats">Absentee Statistics</button>
             </div>
+            {% endif %}
         </div>
     </div>
 <!------------------------------------------------------------------------------------------------------>

@@ -18,7 +18,8 @@ def submit_absentees(request, classpk, lessonnum):
 
     #Current User
     current_user = request.user
-
+    #add to session
+    request.session['grade'] = obj_class.grade.id
     
 
     #Fetch a list of all learners 
@@ -64,7 +65,9 @@ def submit_absentees(request, classpk, lessonnum):
 ##############################################################################
 def autocomplete(request):
     query = request.GET.get('term', '')
-    learners = Learner.objects.filter(name__icontains=query)[:10]  # Adjust the number of suggestions as needed
+    learnergrade = request.session.get('grade')
+
+    learners = Learner.objects.filter(name__icontains=query, grade = learnergrade).order_by('name')[:10]  # Adjust the number of suggestions as needed
     suggestions = [{'label':f"{learner.name} | Gr {learner.reg_class}", 'value': learner.id} for learner in learners]
     return JsonResponse(suggestions, safe=False)
 

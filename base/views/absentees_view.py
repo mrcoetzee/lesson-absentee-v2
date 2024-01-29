@@ -27,9 +27,9 @@ def manage_absentees(request):
         try:
             selected_class = request.POST.get('classid')
             selected_class = ClassUnit.objects.get(id=selected_class)
-        except ClassUnit.DoesNotExist:
+        except:
             selected_class = None
-            messages.error(request, 'Please select a class')
+            #messages.error(request, 'Please select a class')
 
         #Get lesson number
         lessonnum = request.POST.get('lessonNumber')
@@ -38,7 +38,7 @@ def manage_absentees(request):
         if double_lesson == '1':
             lessonnum = f"{lessonnum} - {int(lessonnum)+1}"
         else:
-            lessonnum= f"{lessonnum}test"
+            lessonnum= f"{lessonnum}"
 
 
         #btnSubmitAbsentees
