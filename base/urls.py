@@ -20,7 +20,11 @@ urlpatterns = [
     path('ajax/autocomplete/', views.autocomplete, name='autocomplete'),
     path('ajax/delete_item/', views.deleteitem, name='deleteitem'),
     path('ajax/download_csv_all/', views.download_csv_all, name='download_csv_all'),
-    path('ajax/download_csv_today/', views.download_csv_today, name='download_csv_today')
+    path('ajax/download_csv_today/', views.download_csv_today, name='download_csv_today'),
+    path('ajax/morning_absentees_today/', views.morning_absentees_today, name='morning_absentees_today'),
+    path('ajax/morning_absentees_any/', views.morning_absentees_any, name='morning_absentees_any'),
+    path('ajax/lesson_absentees_any/', views.lesson_absentees_any, name='lesson_absentees_any')
+    
     
 
   

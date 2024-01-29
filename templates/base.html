@@ -46,11 +46,16 @@
         {% if current_user.is_authenticated %}
             <div class="row">
                 
-                <div class="col">
-                    <a href="{% url 'home' %}">
-                        <h5 class="btn btn-secondary">Logged in as <b>{{ current_user }}</b></h5>
+                <div class="col text-start">
+                    <a class="btn btn-secondary" href="{% url 'home' %}">
+                        Logged in as <b>{{ current_user }}</b>
                     </a>
-                </div> 
+                 
+                
+                    <a class="btn btn-primary" href="{% url 'home' %}">
+                        Home
+                    </a>
+                </div>
                 <div class="col text-end" >
                     {% if current_user.is_superuser %}
                         <a class = "btn btn-warning" href="/admin/">Admin</a>

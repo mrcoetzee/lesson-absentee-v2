@@ -11,15 +11,38 @@
         <div class="row">
             <div class="col-md-2">
                 <!--Download all button-->
-                <button type="button" class="btn btn-warning mt-3" value="download_all", name="btnDownloadAll" id="btnDownloadAll">All absentees</button>
+                <button type="button" class="btn btn-warning mt-3" value="download_all", name="btnDownloadAll" id="btnDownloadAll">Lesson absentees (all)</button>
             </div>
             <div class="col-md-2">
                 <!--Download today button-->
-                <button type="button" class="btn btn-warning mt-3" value="download_today", name="btnDownloadToday" id="btnDownloadToday">Today's absentees</button>
-            </div>               
+                <button type="button" class="btn btn-warning mt-3" value="download_today", name="btnDownloadToday" id="btnDownloadToday">Lesson absentees (today)</button>
+            </div>   
+            <div class="col-md-2">
+                <!--Download Morning Absentees button-->
+                <button type="button" class="btn btn-warning mt-3" value="morning absentees", name="btnDownloadMorningToday" id="btnDownloadMorningToday">Morning absentees (today)</button>
+            </div>             
         </div>
     </div>
+    <!--Date picker-->
+    <div class="container p-5 my-5 bg-secondary text-white">
+        <div class="row">
+            <div class="col-md-2">
+                <label for="absenteeDate">Choose date</label>
+                <input id="absenteeDate" name="absenteeDate" class="form-control" type="date" />
+            </div>
 
+            <div class="col-md-2">
+                <!--Download Morning Absentees button-->
+                <button type="button" class="btn btn-warning mt-3" value="morning absentees any", name="btnDownloadMorningAny" id="btnDownloadMorningAny">Morning absentees</button>
+            </div>
+
+            <div class="col-md-2">
+                <!--Download Lesson Absentees button-->
+                <button type="button" class="btn btn-warning mt-3" value="lesson absentees any", name="btnDownloadAbsenteesAny" id="btnDownloadAbsenteesAny">Lesson absentees</button>
+            </div>
+        </div>
+
+    </div>
 </form>
 
 <script>
@@ -59,6 +82,10 @@
         });
 
         $('#btnDownloadToday').on('click', function () {
+
+            var today = new Date();
+            
+            today = today.toISOString().slice(0, 10);
             $.ajax({
                 url: '{% url "download_csv_today" %}',
                 method: 'GET',
@@ -75,8 +102,132 @@
                     
                     link.href = window.URL.createObjectURL(blob);
                     
-                    link.download = 'today_data.csv';
+                    link.download = 'lesson_absentees_today_' + today + '.csv';
                        
+
+                    // Append the link to the body and trigger the click event
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Remove the temporary link from the DOM
+                    document.body.removeChild(link);
+                    alert("Downloaded successfully");
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('#btnDownloadMorningToday').on('click', function () {
+
+            
+            var today = new Date();
+            
+            today = today.toISOString().slice(0, 10);
+            
+
+            $.ajax({
+                url: '{% url "morning_absentees_today" %}',
+                method: 'GET',
+                
+
+                success: function (data) {
+                    // The download link will not be visible, but the browser will download the file
+                    console.log('Received data:', data);
+                    const blob = new Blob([data], { type: 'text/csv' });
+                    console.log('Blob created:', blob); 
+                    
+                    // Create a temporary link element
+                    const link = document.createElement('a');
+                    
+                    link.href = window.URL.createObjectURL(blob);
+                    
+                    link.download = 'morning_absentees_today_' + today + '.csv';
+                       
+
+                    // Append the link to the body and trigger the click event
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Remove the temporary link from the DOM
+                    document.body.removeChild(link);
+                    alert("Downloaded successfully");
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+        // Morning absentees date picker
+        $('#btnDownloadMorningAny').on('click', function () {
+
+            //const selectedDatetime = $('#absenteeDate').data('absenteeDate').date().toISOString();
+
+            //const url = '{% url "morning_absentees_any" %}?datepicker=' + selectedDatetime;
+            const selectedDate = $('#absenteeDate').val();
+
+            $.ajax({
+                url: '{% url "morning_absentees_any" %}',
+                method: 'GET',
+                data: {
+                    absenteeDate: selectedDate
+                },
+                
+                success: function (data) {
+                    // The download link will not be visible, but the browser will download the file
+                    console.log('Received data:', data);
+                    const blob = new Blob([data], { type: 'text/csv' });
+                    console.log('Blob created:', blob); 
+                    
+                    // Create a temporary link element
+                    const link = document.createElement('a');
+                    
+                    link.href = window.URL.createObjectURL(blob);
+                    
+                    link.download = 'morning_absentees_' + selectedDate + '.csv';
+                       
+
+                    // Append the link to the body and trigger the click event
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Remove the temporary link from the DOM
+                    document.body.removeChild(link);
+                    alert("Downloaded successfully");
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        // Lesson absentees date picker
+        $('#btnDownloadAbsenteesAny').on('click', function () {
+
+            const selectedDate = $('#absenteeDate').val();
+            
+
+            $.ajax({
+                url: '{% url "lesson_absentees_any" %}',
+                method: 'GET',
+                data: {
+                    absenteeDate: selectedDate
+                },
+                
+                success: function (data) {
+                    // The download link will not be visible, but the browser will download the file
+                    console.log('Received data:', data);
+                    const blob = new Blob([data], { type: 'text/csv' });
+                    console.log('Blob created:', blob); 
+                    
+                    // Create a temporary link element
+                    const link = document.createElement('a');
+                    
+                    link.href = window.URL.createObjectURL(blob);
+                    
+                    link.download = "lesson_absentees_" + selectedDate + ".csv";
+                    
 
                     // Append the link to the body and trigger the click event
                     document.body.appendChild(link);

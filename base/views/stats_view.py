@@ -6,6 +6,8 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.db.models import Q
+
 
 from base.models import LearnerClass
 
@@ -51,7 +53,91 @@ def download_csv_today(request):
     writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
-    queryset = LearnerClass.objects.filter(created__date=datetime.date.today()).order_by('-created')  # Replace with your actual model
+    queryset = LearnerClass.objects.filter(created__date=datetime.date.today()).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    for obj in queryset:
+        created = obj.created
+        learner = obj.learner if obj.learner else 'no_learner' 
+        teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
+        subject = obj.classunit.subject if obj.classunit else 'no_subject'
+        grade = obj.learner.grade if obj.learner else 'no_grade'
+        description = obj.classunit.description if obj.classunit else ''
+
+
+        writer.writerow([learner, teacher, subject, grade, description, created])
+        
+    return response
+
+#Today's morning absentees
+def morning_absentees_today(request):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="morning_absentees_today.csv"'
+
+    # Create a CSV writer and write the header
+    writer = csv.writer(response)
+    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+
+    # Query the data from the model and write to the CSV file
+    queryset = LearnerClass.objects.filter(created__date=datetime.date.today(),lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    for obj in queryset:
+        created = obj.created
+        learner = obj.learner if obj.learner else 'no_learner' 
+        teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
+        subject = obj.classunit.subject if obj.classunit else 'Register Class'
+        grade = obj.learner.grade if obj.learner else 'no_grade'
+        description = obj.classunit.description if obj.classunit else 'no_description'
+
+
+        writer.writerow([learner, teacher, subject, grade, description, created])
+        
+    return response
+
+#Any morning absentees
+def morning_absentees_any(request):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="morning_absentees_any.csv"'
+
+    datepicker = request.GET.get('absenteeDate') 
+    print(datepicker)
+    #datepicker = datetime.datetime.strptime(datepicker, '%Y-%m-%d')
+ 
+
+
+    # Create a CSV writer and write the header
+    writer = csv.writer(response)
+    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+
+    # Query the data from the model and write to the CSV file
+    queryset = LearnerClass.objects.filter(created__date=datepicker,lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    for obj in queryset:
+        created = obj.created
+        learner = obj.learner if obj.learner else 'no_learner' 
+        teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
+        subject = obj.classunit.subject if obj.classunit else 'Register Class'
+        grade = obj.learner.grade if obj.learner else 'no_grade'
+        description = obj.classunit.description if obj.classunit else 'no_description'
+
+
+        writer.writerow([learner, teacher, subject, grade, description, created])
+        
+    return response
+
+#Any lesson absentees
+def lesson_absentees_any(request):
+    datepicker = request.GET.get('absenteeDate')
+                                 
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="morning_absentees_{datepicker}.csv"'
+
+     
+
+    # Create a CSV writer and write the header
+    writer = csv.writer(response)
+    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+
+    # Query the data from the model and write to the CSV file
+    queryset = LearnerClass.objects.filter(created__date=datepicker).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         created = obj.created
         learner = obj.learner if obj.learner else 'no_learner' 
