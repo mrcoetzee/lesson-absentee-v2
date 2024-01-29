@@ -71,8 +71,8 @@ class LearnerClass(models.Model):
 
 
     def __str__(self):
-        return self.classunit.subject.subject + ' ' + self.learner.name + ' | '  + \
-              self.created.strftime('%d-%m-%Y')
+        return f"{self.classunit} {self.learner.name} | \
+              {self.created.strftime('%d-%m-%Y')}"
     
 
 

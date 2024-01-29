@@ -17,7 +17,7 @@ def index(request):
             #Check if teacher code exists
             
             try:
-                teacher = User.objects.get(username=teacherCode,password=teacherPass)
+                teacher = authenticate(request,username=teacherCode,password=teacherPass)
             except User.DoesNotExist:
                 messages.warning(request, "Teacher code or password is incorrect")
                 teacher = None
