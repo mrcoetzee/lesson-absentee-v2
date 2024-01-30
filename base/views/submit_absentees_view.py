@@ -38,9 +38,9 @@ def submit_absentees(request, classpk, lessonnum):
             try:
                 #fetch Learner object
                 learner = Learner.objects.get(id=learner_id)
-            except Learner.DoesNotExist:
+            except :
                 learner = None
-                messages.error = (request, 'Learner not found, please try again.')
+                messages.error(request, 'Learner not found, please try again.')
 
             #Add learner to LearnerClass
             if learner:
