@@ -50,11 +50,12 @@ def download_csv_today(request):
 
     # Create a CSV writer and write the header
     writer = csv.writer(response)
-    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+    writer.writerow(['Lesson No','Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
     queryset = LearnerClass.objects.filter(created__date=datetime.date.today()).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
+        lesson_no = obj.lesson_no
         created = obj.created
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
@@ -63,7 +64,7 @@ def download_csv_today(request):
         description = obj.classunit.description if obj.classunit else ''
 
 
-        writer.writerow([learner, teacher, subject, grade, description, created])
+        writer.writerow([lesson_no, learner, teacher, subject, grade, description, created])
         
     return response
 
@@ -75,11 +76,12 @@ def morning_absentees_today(request):
 
     # Create a CSV writer and write the header
     writer = csv.writer(response)
-    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+    writer.writerow(['Lesson No', 'Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
     queryset = LearnerClass.objects.filter(created__date=datetime.date.today(),lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
+        lesson_no = obj.lesson_no
         created = obj.created
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
@@ -88,7 +90,7 @@ def morning_absentees_today(request):
         description = obj.classunit.description if obj.classunit else 'no_description'
 
 
-        writer.writerow([learner, teacher, subject, grade, description, created])
+        writer.writerow([lesson_no, learner, teacher, subject, grade, description, created])
         
     return response
 
@@ -106,11 +108,12 @@ def morning_absentees_any(request):
 
     # Create a CSV writer and write the header
     writer = csv.writer(response)
-    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+    writer.writerow(['Lesson No', 'Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
     queryset = LearnerClass.objects.filter(created__date=datepicker,lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
+        lesson_no = obj.lesson_no
         created = obj.created
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
@@ -119,7 +122,7 @@ def morning_absentees_any(request):
         description = obj.classunit.description if obj.classunit else 'no_description'
 
 
-        writer.writerow([learner, teacher, subject, grade, description, created])
+        writer.writerow([lesson_no, learner, teacher, subject, grade, description, created])
         
     return response
 
@@ -134,11 +137,12 @@ def lesson_absentees_any(request):
 
     # Create a CSV writer and write the header
     writer = csv.writer(response)
-    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+    writer.writerow(['Lesson No','Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
     queryset = LearnerClass.objects.filter(created__date=datepicker).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
+        lesson_no = obj.lesson_no
         created = obj.created
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
@@ -147,6 +151,6 @@ def lesson_absentees_any(request):
         description = obj.classunit.description if obj.classunit else ''
 
 
-        writer.writerow([learner, teacher, subject, grade, description, created])
+        writer.writerow([lesson_no, learner, teacher, subject, grade, description, created])
         
     return response
