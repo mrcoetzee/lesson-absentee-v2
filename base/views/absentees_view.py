@@ -35,10 +35,16 @@ def manage_absentees(request):
         lessonnum = request.POST.get('lessonNumber')
         double_lesson = request.POST.get('double_check')
 
+        #if lessonnum is not within 1 to 8
+        
         if double_lesson == '1':
-            lessonnum = f"{lessonnum} - {int(lessonnum)+1}"
+            if lessonnum in ['1', '2', '3', '4', '5', '6', '7', '8']:
+                lessonnum = f"{lessonnum} - {int(lessonnum)+1}"
+            else:
+                lessonnum= f"{lessonnum}"
         else:
             lessonnum= f"{lessonnum}"
+        
 
 
         #btnSubmitAbsentees
