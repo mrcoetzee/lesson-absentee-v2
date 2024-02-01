@@ -26,12 +26,14 @@ def download_csv_all(request):
 
     # Create a CSV writer and write the header
     writer = csv.writer(response)
-    writer.writerow(['Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
+    writer.writerow(['Lesson No','Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
+    
     queryset = LearnerClass.objects.all().order_by('-created')  # Replace with your actual model
     for obj in queryset:
-        created = obj.created
+        lesson_no = obj.lesson_no
+        created = obj.created.strftime('%Y-%m-%d')
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
         subject = obj.classunit.subject if obj.classunit else 'no_subject'
@@ -39,7 +41,7 @@ def download_csv_all(request):
         description = obj.classunit.description if obj.classunit else ''
 
 
-        writer.writerow([learner, teacher, subject, grade, description, created])
+        writer.writerow([lesson_no, learner, teacher, subject, grade, description, created])
         
     return response
 
@@ -56,7 +58,7 @@ def download_csv_today(request):
     queryset = LearnerClass.objects.filter(created__date=datetime.date.today()).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
-        created = obj.created
+        created = obj.created.strftime('%Y-%m-%d')
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
         subject = obj.classunit.subject if obj.classunit else 'no_subject'
@@ -82,7 +84,7 @@ def morning_absentees_today(request):
     queryset = LearnerClass.objects.filter(created__date=datetime.date.today(),lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
-        created = obj.created
+        created = obj.created.strftime('%Y-%m-%d')
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
         subject = obj.classunit.subject if obj.classunit else 'Register Class'
@@ -114,7 +116,7 @@ def morning_absentees_any(request):
     queryset = LearnerClass.objects.filter(created__date=datepicker,lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
-        created = obj.created
+        created = obj.created.strftime('%Y-%m-%d')
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
         subject = obj.classunit.subject if obj.classunit else 'Register Class'
@@ -143,7 +145,7 @@ def lesson_absentees_any(request):
     queryset = LearnerClass.objects.filter(created__date=datepicker).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
-        created = obj.created
+        created = obj.created.strftime('%Y-%m-%d')
         learner = obj.learner if obj.learner else 'no_learner' 
         teacher = obj.classunit.getusername() if obj.classunit else 'no_teacher'
         subject = obj.classunit.subject if obj.classunit else 'no_subject'
