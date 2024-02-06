@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 import datetime
 
@@ -16,10 +16,9 @@ def manage_absentees(request):
     #Get classes for current user
     classes = ClassUnit.objects.filter(user=current_user).order_by('subject')
 
+    #initialize double lesson to false
     double_lesson = False
     
-
-
     #Process inputs
     if request.method == 'POST':
 
@@ -29,26 +28,23 @@ def manage_absentees(request):
             selected_class = ClassUnit.objects.get(id=selected_class)
         except:
             selected_class = None
-            #messages.error(request, 'Please select a class')
+            #No class selected, return to screen
+            messages.error(request, 'Please select a class')
+            context = {'current_user' : current_user, 'classes' : classes}
+            return render (request, 'base/manage_absentees.html', context)
 
         #Get lesson number
-        
-
         if selected_class.subject.subject == 'Register Class':
             lessonnum = 'Register Class'
             double_lesson = '0'
-        elif selected_class.subject =='LO':
+        elif selected_class.subject.subject =='LO':
             lessonnum = 'LO'
             double_lesson = '0'
         else:
             lessonnum = request.POST.get('lessonNumber')
             double_lesson = request.POST.get('double_check')
 
-        
-
-
-        #if lessonnum is not within 1 to 8
-        
+        #double lesson only valid if numbered lesson       
         if double_lesson == '1':
             if lessonnum in ['1', '2', '3', '4', '5', '6', '7', '8']:
                 lessonnum = f"{lessonnum} - {int(lessonnum)+1}"
@@ -57,20 +53,19 @@ def manage_absentees(request):
         else:
             lessonnum= f"{lessonnum}"
         
-
-
         #btnSubmitAbsentees
-        if request.POST.get('btnSubmitAbsentees') and selected_class and lessonnum is not None:
+            #
+        if request.POST.get('btnSubmitAbsentees') and selected_class is not None and lessonnum is not None:
             classpk = selected_class.id
             return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum)
         elif not selected_class:
             messages.error(request, 'Please select a class')
 
-        #btnManageAbsentees
+    '''   #btnManageAbsentees
         if request.POST.get('btnManageAbsentees') and selected_class:
             classpk = selected_class.id
             return redirect('view_absentees', classpk=classpk)
-
+    '''
     #Context
     context = {'current_user' : current_user, 'classes' : classes}
 
@@ -78,7 +73,7 @@ def manage_absentees(request):
 
 ##############################################################################
 
-
+'''
 @login_required(login_url='index')
 def view_absentees(request, classpk):
 
@@ -88,4 +83,4 @@ def view_absentees(request, classpk):
     #Context
     context = {'current_user' : current_user}
 
-    return render(request, 'base/view_absentees.html', context)
+    return render(request, 'base/view_absentees.html', context)'''
