@@ -32,8 +32,20 @@ def manage_absentees(request):
             #messages.error(request, 'Please select a class')
 
         #Get lesson number
-        lessonnum = request.POST.get('lessonNumber')
-        double_lesson = request.POST.get('double_check')
+        
+
+        if selected_class.subject.subject == 'Register Class':
+            lessonnum = 'Register Class'
+            double_lesson = '0'
+        elif selected_class.subject =='LO':
+            lessonnum = 'LO'
+            double_lesson = '0'
+        else:
+            lessonnum = request.POST.get('lessonNumber')
+            double_lesson = request.POST.get('double_check')
+
+        
+
 
         #if lessonnum is not within 1 to 8
         

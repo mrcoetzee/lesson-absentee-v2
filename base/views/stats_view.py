@@ -55,7 +55,7 @@ def download_csv_today(request):
     writer.writerow(['Lesson No','Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
-    queryset = LearnerClass.objects.filter(created__date=datetime.date.today()).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    queryset = LearnerClass.objects.filter(created__date=datetime.date.today()).exclude(classunit_id__subject_id__subject='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
         created = obj.created.strftime('%Y-%m-%d')
@@ -81,7 +81,7 @@ def morning_absentees_today(request):
     writer.writerow(['Lesson No', 'Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
-    queryset = LearnerClass.objects.filter(created__date=datetime.date.today(),lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    queryset = LearnerClass.objects.filter(created__date=datetime.date.today(),classunit_id__subject_id__subject='Register Class',lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
         created = obj.created.strftime('%Y-%m-%d')
@@ -113,7 +113,7 @@ def morning_absentees_any(request):
     writer.writerow(['Lesson No', 'Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
-    queryset = LearnerClass.objects.filter(created__date=datepicker,lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    queryset = LearnerClass.objects.filter(created__date=datepicker,classunit_id__subject_id__subject='Register Class',lesson_no='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
         created = obj.created.strftime('%Y-%m-%d')
@@ -142,7 +142,7 @@ def lesson_absentees_any(request):
     writer.writerow(['Lesson No','Learner', 'Teacher','Subject', 'Grade', 'Description', 'Date/Time'])  # Replace with your model fields
 
     # Query the data from the model and write to the CSV file
-    queryset = LearnerClass.objects.filter(created__date=datepicker).exclude(lesson_no='Register Class').order_by('-created')  # Replace with your actual model
+    queryset = LearnerClass.objects.filter(created__date=datepicker).exclude(classunit_id__subject_id__subject='Register Class').order_by('-created')  # Replace with your actual model
     for obj in queryset:
         lesson_no = obj.lesson_no
         created = obj.created.strftime('%Y-%m-%d')
