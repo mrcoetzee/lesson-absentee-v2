@@ -4,6 +4,54 @@
 
 {% block content %}
 
+<style>
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.border {
+    border: 1px solid #3498db; /* Blue border */
+    border-radius: 10px;
+}
+
+.bg-dark {
+    background-color: #3498db; /* Blue background color */
+}
+
+.text-white {
+    color: #fff;
+}
+
+h4 {
+    color: #f39c12; /* Yellow heading color */
+}
+
+.list-group {
+    margin-top: 10px;
+}
+
+.list-group li {
+    list-style: none;
+    padding: 10px;
+    background-color: #2980b9; /* Dark blue background color for list items */
+    margin-bottom: 5px;
+}
+
+input[type="hidden"] {
+    display: none;
+}
+.line{
+    border: none;
+    height : 2px;
+    background-color: #000;
+}
+.div-color-1{
+    background-color: #c0d6e4;
+}
+
+</style>
+
 <form action="{% url 'home' %}" method="post">
     {% csrf_token %}
 
@@ -40,21 +88,22 @@
 
 <!--Display a list of classes for the logged in teacher-->
 <!------------------------------------------------------------------------------------------------------>
-    <div class="container p-5 my-5 border  bg-dark text-white">
-        <h4>Your classes:</h4>
-        {% for class in classes %}
+    <div class="container p-5 my-5 border text-primary" style="background-color: #c6bdae" >
+        <h3 class="text-dark">Today's absentees: {{date_today}}</h3>
+        <hr class="line" width="50%"/>
+        {% for item in home_list %}
+
+            <h5 class="mb-2 mt-2" style="color:#514e4c">{{item.subject}} {{item.grade}} | {{item.desc}}</h5>
+            <div class="col-md-5 border p-2"> 
+            {% for absentee in item.absentee_list %}
+                          
+                <li class="text-black">
+                    {{absentee}}               
+                </li>          
             
-            <div class="list-group">
-                <li class="list-group-item list-group-item-action selector" id="{{class.id}}"
-                onclick="myFunction('{{class.id}}')">
-    
-                <div class="row">
-                    <div class="col-md-2" >{{class.subject}} {{class.grade}}</div>
-                    <div class="col-md-4">{{class.description}}</div>
-                </div>
-                
-                </li>
+            {% endfor %}
             </div>
+            <hr style="color:#514e4c"/>
         {% endfor %}
         <input type = "hidden" name = "classid" id="classid" value = "">
     </div>

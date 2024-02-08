@@ -26,6 +26,8 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.subject
+    def get_name(self):
+        return self.subject
 
 
 class Grade(models.Model):
