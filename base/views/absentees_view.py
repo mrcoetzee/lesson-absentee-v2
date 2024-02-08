@@ -47,7 +47,7 @@ def manage_absentees(request):
         #double lesson only valid if numbered lesson       
         if double_lesson == '1':
             if lessonnum in ['1', '2', '3', '4', '5', '6', '7', '8']:
-                lessonnum = f"{lessonnum} - {int(lessonnum)+1}"
+                lessonnum = f"{lessonnum} + {int(lessonnum)+1}"
             else:
                 lessonnum= f"{lessonnum}"
         else:
