@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_protect
 
-from base.models import ClassUnit, LearnerClass
+from base.models import ClassUnit, LearnerClass, Subject
 
 
 @login_required(login_url='index')
@@ -16,11 +16,20 @@ def home(request):
     #Get current user and classes
     current_user = request.user
 
+    #Get the id value for Register Class and LO.
+    try:
+        reg_id = Subject.objects.get(subject='Register Class')
+        lo_id = Subject.objects.get(subject='LO')
+    except:
+        reg_id = 28
+        lo_id = 5
+
+    #Try to extrac classes and order them according to subject. Register Class must be first and LO, last.
     try:
         classes = ClassUnit.objects.filter(user=current_user).order_by(
             Case(
-            When(subject=28, then=Value(0)), #subject 28 = 'Register Class'
-            When(subject=5, then=Value(9999)),default='subject',
+            When(subject=reg_id, then=Value(0)), #subject 28 = 'Register Class'
+            When(subject=lo_id, then=Value(9999)),default='subject',
             output_field=IntegerField(),
         )
         )
@@ -31,7 +40,7 @@ def home(request):
     date_today = datetime.date.today().strftime("%d/%b")
     
 
-    #dictionary of subjects and learners per subject.
+    #dictionary of classes, containing a list of absent students. Stored in one list to be sent to front.
     home_list = []
 
     for a_class in classes:
