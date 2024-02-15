@@ -66,7 +66,7 @@ class Learner(models.Model):
 
 
 class LearnerClass(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField()
     classunit = models.ForeignKey(ClassUnit, on_delete=models.SET_NULL, null=True)
     learner = models.ForeignKey(Learner, on_delete=models.SET_NULL, null=True)
     lesson_no=models.CharField(max_length=1, null=True)

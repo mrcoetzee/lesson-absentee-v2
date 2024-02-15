@@ -32,17 +32,54 @@
 
 <!--Input buttons-->
 <!------------------------------------------------------------------------------------------------------>
+<div class="container p-5 my-5 bg-secondary text-white">
+    <table style="border-spacing: 15px; border-collapse: separate; width:50%" >
+        <tr>
+            <th>Select Lesson Number</th>
+            <th style="text-align: center;">Double Lesson</th>
+        </tr>
+        <tr>
+            <td>
+                <select class="form-control" id="lessonNumber" name="lessonNumber">
+                    <option>Register Class</option>
+                    <option>LO</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    
+                </select>
+            </td>
+            <td style="text-align: center;">
+                <input class= "form-check-input fs-4" type="checkbox" value="1" id="double_check" name = "double_check">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="btn btn-primary" name="btnSubmitAbsentees", value="SubmitAbsentees">Submit Absentees</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Past absentees: <br/>
+                <input id="absentee_date_old" name="absentee_date_old" class="form-control" type="date" />
+            </td>
+        </tr>
+    </table>
+</div>
 
+<!--
 <div class="container p-5 my-5 bg-secondary text-white">
     
     <div class="row">
 
           
-        <!--Submit Lesson Absentees Button-->
       
-                <br/>
-                <br/>
-           <!--<div class="row">-->
+          
                 <div class="col-md-3">
                     <label for="lessonNumber" class="form-label">Select Lesson Number:</label>
                     <select class="form-control" id="lessonNumber" name="lessonNumber">
@@ -69,32 +106,22 @@
                     </div>
                 </div>
     </div>
-        <div class="row">
+    <div class="row">
                 <div class="col-md-3">
-                    <!--<label for="btnSubmitAbsentees" class="form-label">Submit lesson absentees.</label>-->
+                    
                     
                     <br/>
                     <button type="submit" class="btn btn-primary" name="btnSubmitAbsentees", value="SubmitAbsentees">Submit Absentees</button>
                 </div>
-        </div>
-           <!-- </div>-->
+                <div class="col text-end">
+                    <input id="absentee_date_old" name="absentee_date_old" class="form-control" type="date" />
 
-         
-      
-        <!------------------------------------------------------------------------------------------>
-        <!--Manage Absentees Button-->
+                </div>
+                
+    </div>
 
-        <!--
-        <div class="col">
-            <label for="btnManageAbsentees" class="form-label">View and manage absentees. (Coming soon)</label>
-            <br/>
-            <button type="submit" class="btn btn-warning" value="ManageAbsentees", name="btnManageAbsentees">Manage Absentees</button>
-        </div>
-        -->
-    
-    
-</div>
-        <!------------------------------------------------------------------------------------------>
+</div> 
+  -->      <!------------------------------------------------------------------------------------------>
         
     
 

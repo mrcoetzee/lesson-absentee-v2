@@ -33,7 +33,7 @@ def submit_absentees(request, classpk, lessonnum):
 
         #Capture user input
             learner_id = request.POST.get('absentStudentsInputId')
-             
+            
             
             try:
                 #fetch Learner object
@@ -46,7 +46,8 @@ def submit_absentees(request, classpk, lessonnum):
             if learner:
                 
                 try:
-                    new_absentee= LearnerClass(learner=learner, classunit=obj_class,lesson_no=lessonnum)
+                    new_absentee= LearnerClass(learner=learner, classunit=obj_class,lesson_no=lessonnum\
+                                               ,created=request.session['date_absentee'])
                     new_absentee.save()
                     messages.success(request, 'Learner successfully added')
                 except Exception as e:

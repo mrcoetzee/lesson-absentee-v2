@@ -21,7 +21,7 @@ def index(request):
                 messages.warning(request, "Teacher code or password is incorrect")
             elif teacher is not None:
                 login(request, teacher)
-                return redirect('home')
+                return redirect('manage_absentees')
             
             
         '''      

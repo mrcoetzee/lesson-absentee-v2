@@ -22,6 +22,17 @@ def manage_absentees(request):
     #Process inputs
     if request.method == 'POST':
 
+        old_date = request.POST.get('absentee_date_old')
+        
+        if old_date == '':
+            print('no date')
+            request.session['date_absentee'] = None
+        else:
+            request.session['date_absentee'] = old_date
+        
+
+            
+        
         #Get selected class
         try:
             selected_class = request.POST.get('classid')
@@ -55,7 +66,8 @@ def manage_absentees(request):
         
         #btnSubmitAbsentees
             #
-        if request.POST.get('btnSubmitAbsentees') and selected_class is not None and lessonnum is not None:
+        if request.POST.get('btnSubmitAbsentees') and selected_class is not None and lessonnum is not None\
+            and old_date:
             classpk = selected_class.id
             return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum)
         elif not selected_class:
