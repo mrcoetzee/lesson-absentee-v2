@@ -22,17 +22,12 @@ def manage_absentees(request):
     #Process inputs
     if request.method == 'POST':
 
-        old_date = request.POST.get('absentee_date_old')
+        date_absentee = request.POST.get('absentee_date_old')
         
-        if old_date == '':
-            print('no date')
-            request.session['date_absentee'] = None
-        else:
-            request.session['date_absentee'] = old_date
-        
-
-            
-        
+        if date_absentee == '':            
+            date_absentee = (datetime.date.today()) 
+            print(date_absentee) 
+  
         #Get selected class
         try:
             selected_class = request.POST.get('classid')
@@ -66,33 +61,16 @@ def manage_absentees(request):
         
         #btnSubmitAbsentees
             #
-        if request.POST.get('btnSubmitAbsentees') and selected_class is not None and lessonnum is not None\
-            and old_date:
+        if request.POST.get('btnSubmitAbsentees') and selected_class is not None and lessonnum is not None:
             classpk = selected_class.id
-            return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum)
+            return redirect('submit_absentees', classpk=classpk, lessonnum=lessonnum, date_absentee=date_absentee) #old_date add to param
         elif not selected_class:
             messages.error(request, 'Please select a class')
 
-    '''   #btnManageAbsentees
-        if request.POST.get('btnManageAbsentees') and selected_class:
-            classpk = selected_class.id
-            return redirect('view_absentees', classpk=classpk)
-    '''
+
     #Context
     context = {'current_user' : current_user, 'classes' : classes}
 
     return render (request, 'base/manage_absentees.html', context)
 
 ##############################################################################
-
-'''
-@login_required(login_url='index')
-def view_absentees(request, classpk):
-
-    #Current User
-    current_user = request.user
-
-    #Context
-    context = {'current_user' : current_user}
-
-    return render(request, 'base/view_absentees.html', context)'''

@@ -9,7 +9,7 @@ urlpatterns = [
     path('home/',views.home, name="home"),
 
     path('manage_absentees/', views.manage_absentees, name="manage_absentees"),
-    path('submit_absentees/<str:classpk>/<str:lessonnum>/', views.submit_absentees, name="submit_absentees"),
+    path('submit_absentees/<str:classpk>/<str:lessonnum>/<str:date_absentee>/', views.submit_absentees, name="submit_absentees"),
 
     path('manage_stats/', views.manage_stats, name="manage_stats"),
 

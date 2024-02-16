@@ -9,17 +9,17 @@ from base.models import ClassUnit, Learner, LearnerClass
 
 
 @login_required(login_url='index')
-def submit_absentees(request, classpk, lessonnum):
+def submit_absentees(request, classpk, lessonnum, date_absentee):
 
     #Extract all absentees from model LearnerClass that match today's date.
-    absentees = LearnerClass.objects.filter(classunit=classpk, created__date=datetime.date.today())
+    absentees = LearnerClass.objects.filter(classunit=classpk, created__date=date_absentee)
     obj_class = ClassUnit.objects.get(id=classpk)
     
 
     #Current User
     current_user = request.user
     #add to session
-    request.session['grade'] = obj_class.grade.id
+    request.session['grade'] = obj_class.grade.grade #Need grade for autocomplete
     
 
     #Fetch a list of all learners 
@@ -30,24 +30,23 @@ def submit_absentees(request, classpk, lessonnum):
 
         #btnAddAbsentee
         if request.POST.get('btnAddAbsentee'):
-
-        #Capture user input
+            #Capture user input
             learner_id = request.POST.get('absentStudentsInputId')
-            
-            
+      
             try:
-                #fetch Learner object
                 learner = Learner.objects.get(id=learner_id)
             except:
                 learner = None
                 messages.error(request, f'Learner not found, please try again.')
 
             #Add learner to LearnerClass
-            if learner:
-                
+            if learner:      
                 try:
+                    current_time = datetime.datetime.now().time()
+                    date_absentee = datetime.datetime.strptime(date_absentee, "%Y-%m-%d")
+                    date_absentee= datetime.datetime.combine(date_absentee, current_time)
                     new_absentee= LearnerClass(learner=learner, classunit=obj_class,lesson_no=lessonnum\
-                                               ,created=request.session['date_absentee'])
+                                               ,created=date_absentee)
                     new_absentee.save()
                     messages.success(request, 'Learner successfully added')
                 except Exception as e:
@@ -68,7 +67,11 @@ def autocomplete(request):
     query = request.GET.get('term', '')
     learnergrade = request.session.get('grade')
 
-    learners = Learner.objects.filter(name__icontains=query, grade = learnergrade).order_by('name')[:10]  # Adjust the number of suggestions as needed
+    if learnergrade == 'all':
+        learners = Learner.objects.filter(name__icontains=query).order_by('name')[:10] 
+    else:   
+        learners = Learner.objects.filter(name__icontains=query, grade__grade = learnergrade).order_by('name')[:10]  # Adjust the number of suggestions as needed
+
     suggestions = [{'label':f"{learner.name} | Gr {learner.reg_class}", 'value': learner.id} for learner in learners]
     return JsonResponse(suggestions, safe=False)
 
